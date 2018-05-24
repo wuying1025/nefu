@@ -23,8 +23,9 @@
 		}
 		// 查询同一专业的班级
 		public function get_class($data){
-			$query=$this->db->get_where('class',$data);
-			return $query->result();
+		$this->db->order_by('class_name');
+		$query=$this->db->get_where('class',$data);
+		return $query->result();
 		}
 		//学生学院信息
         public function student_college_information($class_id){

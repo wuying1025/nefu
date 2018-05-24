@@ -2,8 +2,7 @@
 	class Admin_model extends CI_model{
 
 // 管理员表
-		
-		
+				
 		//查询所有管理员信息
 		public function get_all_admin(){
 			$this->db->select('admin.*,college.name c_name');
@@ -40,7 +39,8 @@
                 'password' => $pwd
             ));
             return $this->db->affected_rows();
-        }
+		}
+	
 
 	}
 ?>

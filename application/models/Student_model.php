@@ -13,7 +13,6 @@
 
         //根据专业id,班级,年级,学院查询学生
         public function get_students_admin($college,$profession,$class,$grade){
-
             $this->db->select('student.*,class.*');
             $this->db->from('student');
             $this->db->join('class', 'student.class_id = class.id');
@@ -31,6 +30,7 @@
                 $this->db->where('student.college_id', $college);
             }
             $this->db->where('student.is_del', 0);
+            
             $query = $this->db->get();
             return $query->result();
         }
@@ -168,6 +168,11 @@
                 $this->db->like('s_num', $what);
             }
             $query=$this->db->get_where('student',array('is_del'=>0));
+            return $query->result();
+        }
+        //通过班长学号获取班级id
+        public function get_class_by_mon($s_num){
+            $query=$this->db->get_where('student',array('s_num'=>$s_num));          
             return $query->result();
         }
         

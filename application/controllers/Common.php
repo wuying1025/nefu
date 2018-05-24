@@ -42,12 +42,11 @@ class Common extends CI_Controller {
 		$result = $this->Class_model->get_all_class();
 		echo  json_encode($result);
 	}
-	//根据专业id查询班级
+	//根据专业id查询班级  
 	public function get_class_by_pid_grade(){
-		$pid = $this->input->get('pid');
+	 	$pid = $this->input->get('pid');
 		$grade = $this->input->get('grade');
-
-		$data =array('p_id'=>$pid,'grade'=>$grade);
+		$data =array('p_id'=>$pid,'grade'=>$grade); 
 		$result = $this->Class_model->get_class($data);
 		echo  json_encode($result);
 	}
@@ -55,7 +54,7 @@ class Common extends CI_Controller {
 	//根据专业id,班级,年级,学院查询学生
 	public function get_students_admin(){
 		$college = $this->input->get('college');
-		$profession = $this->input->get('profession');
+	    $profession = $this->input->get('profession');
 		$class = $this->input->get('class');
 		$grade = $this->input->get('grade');
 		$result = $this->Student_model->get_students_admin($college,$profession,$class,$grade);
@@ -70,7 +69,8 @@ class Common extends CI_Controller {
 	
 	//获得所有学院专业
 	public function get_all_college(){
-		$result = $this->College_model->get_all_college();
+		$data = array('pid'=>0);
+		$result = $this->College_model->get_all_college($data);
 		echo  json_encode($result);
 	}
 
@@ -104,7 +104,8 @@ class Common extends CI_Controller {
 	}
 	//根据班级id查询班级学生
 	public function get_student_by_class_id(){
-		$class_id = $this->input->get('class_id');
+		$class_id= $this->input->get('pid');
+		//var_dump($class_id);
 		$result = $this->Student_model->get_student_by_class_id($class_id);
 		echo json_encode($result);
 	}

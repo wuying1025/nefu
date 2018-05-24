@@ -10,6 +10,8 @@ class Admin extends CI_Controller {
 		$this->load->model('log_model');
 		$this->load->model('Prize_confirm_model');
 		$this->load->model('Prize_get_model');
+		$this->load->model('Deyu_model');
+		$this->load->model('Wenti_model');
 		$this->load->helper('Log');
 		header("Access-Control-Allow-Origin: * "); 
 	}
@@ -340,7 +342,6 @@ class Admin extends CI_Controller {
     }
     //搜索
     public function search(){
-
         $what = $this->input->get('what');
         $way = $this->input->get('way');
         $result = $this->Student_model->get_stu($what,$way);
@@ -349,8 +350,170 @@ class Admin extends CI_Controller {
         }else{
             echo 'fail';
         }
+	}
+	//考评更改学生德育加分
+	public function reset_add_deyu(){ 
+		$data = array();
+		$pim=$this->input->get('pim');
+		foreach($pim as $rs){				
+			$item=json_decode($rs);
+			$arr1 = array(				
+				'd_cfm'=>$item->check,
+				'd_tag'=>$item->d_tag,
+				'd_sta'=>2,
+				'd_who'=>$item->person,
+			);
+			$arr2=array(
+				's_num'=>$item->s_num,
+				'get_term'=>$item->get_term,
+				'month'=>$item->month,
+				'd_num'=>$item->index,
+			);
+			$update = $this->Deyu_model->upd_deyu($arr1,$arr2);
+		}
+		if($update){
+			echo "success";    
+		}else{
+			echo "fail";
+		}
+	}
+	//考评更改学生德育减分
+	public function reset_short_deyu(){ 
+		$data = array();
+		$pim=$this->input->get('pim');
+		foreach($pim as $rs){				
+			$item=json_decode($rs);
+			$arr1 = array(				
+				'd_cfm'=>$item->check,
+				'd_tag'=>$item->d_tag,
+				'd_sta'=>2,
+				'd_who'=>$item->person,
+			);
+			$arr2=array(
+				's_num'=>$item->s_num,
+				'get_term'=>$item->get_term,
+				'month'=>$item->month,
+				'd_num'=>$item->index,
+			);
+			$update = $this->Deyu_model->upd_short_deyu($arr1,$arr2);
+		}
+		if($update){
+			echo "success";    
+		}else{
+			echo "fail";
+		}
+	}
+	//考评更改文体
+	public function reset_wenti(){ //pim
+		$data = array();
+		$pim=$this->input->get('pim');
 
-    }
+		foreach($pim as $rs){				
+			$item=json_decode($rs);
+			$arr1=array(
+				'w_cfm'=>$item->w_cfm,
+				'w_sta'=>2,
+				'w_who'=>$item->w_who,				
+			);
+			$w_id=$item->index+1;
+			$upd=$this->Wenti_model->upd_wenti($arr1,$w_id);
+		
+		}
+		if($upd){
+			echo "success";
+		}else{
+			echo "fail";
+		}
+	}
+ 	//辅导员和考评查看德育成绩  根据class_id 和 get_term 
+	public function adm_get_deyu(){
+		 $class_id=$this->input->get('class_id');//31;
+		$term =$this->input->get('get_term'); //"2018年春季";
+		$sub_term = substr($term,7);
+		$month =$this->input->get('month'); //"3";
+	
+		$s_id=$this->input->get('s_id'); //选中的学生
+	
+		$now_year = date("Y");//当前年份
+		$now_month = date("m");  //04格式
+		$d_year = substr($term,0,4);  //所选年份 
+		if($now_month>=3&&$now_month<=8){ //判断当前学期
+			$now_term="春期";
+		}else{
+			$now_term="秋期";
+		}
+		if($now_year!=$d_year||($now_year==$d_year&&$now_term!=$sub_term)){ 
+			 //不是当前学期;
+			$query=$this->Deyu_model->adm_get_total_deyu($class_id,$term);
+			if($query){
+				echo json_encode($query); 
+			}else{
+				echo "fail";
+			}
+		}else{ //是当前学期
+
+			if($month==""||$s_id==""){ //查询本学期总分
+				$query=$this->Deyu_model->adm_get_total_deyu($class_id,$term);
+				if($query){
+					echo json_encode($query); 
+				}
+			}else{
+			 //查看选中同学的德育
+				$query=$this->Deyu_model->adm_get_stu_detail_deyu($class_id,$term,$month,$s_id);
+				if($query){
+					echo json_encode($query);
+				}else{
+					echo "fail";
+				}
+			}
+				
+			}
+							
+	
+	}
+	
+	//辅导员和考评查看文体成绩
+	public function adm_get_wenti(){
+		$class_id=$this->input->get('class_id');//31;
+		$c_id=$this->input->get('c_id');
+		$term =$this->input->get('get_term'); //"2017年秋季";
+		$sub_term = substr($term,7);
+		$month =$this->input->get('month');// "3";
+		$now_year = date("Y");//当前年份
+		$now_month = date("m");  //04格式
+		$d_year = substr($term,0,4);  //所选年份 
+		if($now_month>=3&&$now_month<=8){ //判断当前学期
+			$now_term="春期";
+		}else if($now_month>=9&&$now_month<=12||$now_month>=1&&$now_month<=2){
+			$now_term="秋期";
+		}
+		if($now_year!=$d_year||($now_year==$d_year&&$now_term!=$sub_term)){ 
+			 //不是当前学期
+			$query=$this->Wenti_model->adm_get_total_wenti($class_id,$term);
+			if($query){
+				echo json_encode($query); 
+			}else{
+				echo "fail";
+			}
+		}else{ //是当前学期
+			if($month==""){ //查本学期该班级所有人
+				$query=$this->Wenti_model->adm_get_total_wenti($class_id,$term);
+				if($query){
+					echo json_encode($query); 
+				}else{
+					echo "fail";
+				}
+			}else{
+				$query=$this->Wenti_model->adm_get_detail_wenti($c_id,$class_id,$term,$month);
+				if($query){
+					echo json_encode($query);
+				}else{
+					echo "fail";
+				}
+			}
+						
+		}	
+	}
 }
 
 	

@@ -9,8 +9,8 @@
 			return $query;
 		}
 		//查询学院专业
-		public function get_all_college(){
-			$query=$this->db->get_where('college');
+		public function get_all_college($data){
+			$query=$this->db->get_where('college',$data);
 			return $query->result();
 		}
 		//查询学院
@@ -18,6 +18,5 @@
 			$query=$this->db->get_where('college',$data);
 			return $query->result();
 		}
-
 	}
 ?>
