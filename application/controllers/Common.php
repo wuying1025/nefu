@@ -8,7 +8,8 @@ class Common extends CI_Controller {
 		$this->load->model('Student_model');
 		$this->load->model('Message_model');
 		$this->load->model('Prize_confirm_model');
-		header("Access-Control-Allow-Origin: * "); 
+		$this->load->model('Prize_get_model');
+		header("Access-Control-Allow-Origin: * ");
 	}
 
 	//pid查询奖项
@@ -196,7 +197,7 @@ class Common extends CI_Controller {
         $num = $this->input->get('num');
         $name = $this->input->get('name');
         $term = $this->input->get('term');
-        $result = $this->Prize_confirm_model->get_person_to_prize(trim($num), trim($name), trim($term));
+        $result = $this->Prize_get_model->get_person_to_prize(trim($num), trim($name), trim($term));
         echo json_encode($result);
     }
 
