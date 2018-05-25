@@ -216,29 +216,31 @@ class Student extends CI_Controller {
 	//图片上传
     public function do_upload()
     {
-        $config['upload_path']  = './uploads/';
-        $config['allowed_types']    = 'jpg|gif|png';
-        $config['max_size']     = 2048;
-        $s_id = $this ->input->post('s_id');
-        $config['file_name']  = $s_id."_".date("YmdHis");
-        $this->load->library('upload', $config);
-        if ( ! $this->upload->do_upload('userfile'))
-        {
-            echo 'fail';
-        }
-        else
-        {
-            $path = $this->upload->data();
-            $this->load->model('Student_model');
-            $img_path  = 'http://127.0.0.1/nefu/uploads/'.$path['file_name'];
-            $row = $this->Student_model->update_face($s_id,$img_path);
-            if($row>0){
-            	insert_log_data($s_id,'上传头像',0);
-                echo $img_path;
-            }else{
-                echo 'fail';
-            }
-        }
+
+		header('Access-Control-Allow-Origin:* ');
+		header('Access-Control-Allow-Headers: X-Requested-With, Content-Type');
+
+//		允许上传文件格式
+		$path = "./uploads/";//
+			$name = $_FILES['file']['name'];
+			$name_tmp = $_FILES['file']['tmp_name'];
+			$arr = explode(".",$name);
+			$type = $arr[1];
+			$filename = $arr[0];
+			$s_id = $this ->input->post('s_id');
+			//获取文件类型
+			$pic_name = $filename.time()  . "." . $type;
+			$pic_url =  $path . $pic_name;
+			if (move_uploaded_file($name_tmp, $pic_url)) {//临时文件转移到目标文件夹
+				$this->load->model('Student_model');
+				$img_path  = 'http://127.0.0.1/nefu/uploads/'.$pic_name;
+				$row = $this->Student_model->update_face($s_id,$img_path);
+				echo 'http://127.0.0.1/nefu/uploads/'.$pic_name;
+			} else {
+				echo 'fail';
+			}
+
+
     }
 
     //检查旧密码

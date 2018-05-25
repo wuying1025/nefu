@@ -33,6 +33,16 @@ class Admin extends CI_Controller {
 			echo 'fail';
 		}
 	}
+	//删除班级
+	public function del_class(){
+		$cid = $this->input->get('delId');
+		$rows = $this->Class_model->del_class($cid);
+		if($rows>0){
+			echo 'success';
+		}else{
+			echo 'fail';
+		}
+	}
 	
 	//添加学院
 	public function add_college(){
@@ -46,6 +56,16 @@ class Admin extends CI_Controller {
 			}else{	
 				echo 'fail';
 			}
+	}
+	//删除学院
+	public function del_college(){
+		$id = $this->input->get('delId');
+		$rows = $this->College_model->del_college($id);
+		if($rows>0){
+			echo 'success';
+		}else{
+			echo 'fail';
+		}
 	}
 	//添加专业
 	public function add_profession(){
@@ -92,6 +112,12 @@ class Admin extends CI_Controller {
 		$cid = $this->input->get('cid');
 		$grade = $this->input->get('grade');
 		$college_id = $this->input->get('college_id');
+		$national = $this->input->get('national');
+		$household = $this->input->get('household');
+		$political = $this->input->get('political');
+		$dormitory = $this->input->get('dormitory');
+		$difficulties = $this->input->get('difficulties');
+		$loans = $this->input->get('loans');
 		$sex = $this->input->get('sex');
 		$img = $sex=='男'?'http://127.0.0.1/nefu/uploads/s1.png':'http://127.0.0.1/nefu/uploads/s4.png';
 		$personas_img = $sex=='男'?'http://127.0.0.1/nefu/uploads/boy.png':'http://127.0.0.1/nefu/uploads/girl.png';
@@ -105,7 +131,13 @@ class Admin extends CI_Controller {
 				's_pass'=>md5($psd),'class_id'=>$cid,
 				'grade'=>$grade,'img'=>$img,
 				'college_id'=>$college_id,'sex'=>$sex,
-				'personas_img'=>$personas_img
+				'personas_img'=>$personas_img,
+				'national'=>$national,
+				'household'=>$household,
+				'political'=>$political,
+				'dormitory'=>$dormitory,
+				'difficulties'=>$difficulties,
+				'loans'=>$loans
 			);
 			$result = $this->Student_model->add_student($data);
 			if($result){

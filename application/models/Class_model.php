@@ -8,6 +8,12 @@
 			$query=$this->db->insert('class',$data);
 			return $query;
 		}
+		//删除班级
+		public function del_class($id){
+			$this->db->where_in('id',$id);
+			$this->db->delete('class');
+			return $this->db->affected_rows();
+		}
 		//查询所有班级
 		public function get_all_class(){
 			$this->db->select('class.*,college.name c_name');
