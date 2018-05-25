@@ -220,25 +220,6 @@ class Student extends CI_Controller {
 		header('Access-Control-Allow-Origin:* ');
 		header('Access-Control-Allow-Headers: X-Requested-With, Content-Type');
 
-
-//		//拼接路径
-//		$filePathArr = explode('/', $_SERVER['SCRIPT_FILENAME']);
-//		array_pop($filePathArr);
-//		$filePath = implode('/', $filePathArr);
-//		$filePath .= '/upload/';
-//		$filePath .= md5(time()).$_FILES['file']['name'];
-//		if(move_uploaded_file($_FILES["file"]["tmp_name"],$filePath)){
-//			$filePath = str_replace($_SERVER['CONTEXT_DOCUMENT_ROOT'],"",$filePath);
-//			//其他业务代码.我在制作此处时，我先将图片存入数据库
-//			echo $filePath;
-//
-//		}else{
-////			$data = returnData(false,'对不起,操作失败!请稍候再试!');
-//			echo fail;
-//		}
-////
-////
-
 //		允许上传文件格式
 		$path = "./uploads/";//
 			$name = $_FILES['file']['name'];
@@ -260,30 +241,6 @@ class Student extends CI_Controller {
 			}
 
 
-//
-//        $config['upload_path']  = './uploads/';
-//        $config['allowed_types']    = 'jpg|gif|png|jpeg';
-//        $config['max_size']     = 2048;
-//        $s_id = $this ->input->post('s_id');
-//        $config['file_name']  = $s_id."_".date("YmdHis");
-//        $this->load->library('upload', $config);
-//        if ( ! $this->upload->do_upload('userfile'))
-//        {
-//            echo 'fail11';
-//        }
-//        else
-//        {
-//            $path = $this->upload->data();
-//            $this->load->model('Student_model');
-//            $img_path  = 'http://127.0.0.1/nefu/uploads/'.$path['file_name'];
-//            $row = $this->Student_model->update_face($s_id,$img_path);
-//            if($row>0){
-//            	insert_log_data($s_id,'上传头像',0);
-//                echo $img_path;
-//            }else{
-//                echo 'fail';
-//            }
-//        }
     }
 
     //检查旧密码
