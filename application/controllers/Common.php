@@ -192,12 +192,26 @@ class Common extends CI_Controller {
 		}
 	}
 
+	// 人查奖
 	public function person_to_prize()
     {
         $num = $this->input->get('num');
         $name = $this->input->get('name');
         $term = $this->input->get('term');
         $result = $this->Prize_get_model->get_person_to_prize(trim($num), trim($name), trim($term));
+        echo json_encode($result);
+    }
+
+    // 奖查人
+    public function prize_to_person()
+    {
+        $college = $this->input->get('college');
+        $grade = $this->input->get('grade');
+        $major = $this->input->get('major');
+        $clazz = $this->input->get('class');
+        $prize = $this->input->get('prize');
+        $term = $this->input->get('term');
+        $result = $this->Prize_get_model->get_prize_to_person(trim($college), trim($grade), trim($major), trim($clazz), trim($prize), trim($term));
         echo json_encode($result);
     }
 
