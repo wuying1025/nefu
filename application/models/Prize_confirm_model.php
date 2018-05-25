@@ -92,6 +92,23 @@
 			$query = $this->db->update('prize_confirm', $data);
 			return $query;
 		}
+
+        // 根据学号、姓名、学期 查询获奖情况
+        public function get_person_to_prize($num, $name, $term)
+        {
+            $sql = "select * from prize_get p, student s where p.u_id=s.s_id ";
+            if($num != ""){
+                $sql .= " and s.s_num like '%$num%' ";
+            }
+            if($name != ""){
+                $sql .= " and s.s_name like '%$name%' ";
+            }
+            if($term != ""){
+                $sql .= " and p.get_time like '%$term%' ";
+            }
+            $query = $this->db->query($sql);
+            return $query->result();
+        }
 		
 	}
 ?>

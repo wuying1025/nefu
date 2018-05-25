@@ -191,6 +191,15 @@ class Common extends CI_Controller {
 		}
 	}
 
+	public function person_to_prize()
+    {
+        $num = $this->input->get('num');
+        $name = $this->input->get('name');
+        $term = $this->input->get('term');
+        $result = $this->Prize_confirm_model->get_person_to_prize(trim($num), trim($name), trim($term));
+        echo json_encode($result);
+    }
+
 
 }
 
