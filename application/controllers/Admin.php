@@ -104,6 +104,20 @@ class Admin extends CI_Controller {
 			echo 'fail';
 		}
 	}
+
+	//删除导员
+	public function del_admin(){
+		$id = $this->input->get('delId');
+		$rows = $this->Admin_model->del_admin($id);
+		if($rows>0){
+			echo 'success';
+		}else{
+			echo 'fail';
+		}
+	}
+
+
+
 	//添加学生
 	public function add_student(){
 		$num  = $this->input->get('num');
