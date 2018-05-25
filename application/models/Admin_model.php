@@ -18,7 +18,15 @@
 		public function add_admin($data){
 			$query=$this->db->insert('admin',$data);
 			return $query;
-		}	
+		}
+
+		//删除导员
+		public function del_admin($id){
+			$this->db->where_in('a_id',$id);
+			$this->db->delete('admin');
+			return $this->db->affected_rows();
+		}
+
 		//管理员登录
 		public function admin_login($data){
 			$query=$this->db->get_where('admin',$data);
