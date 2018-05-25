@@ -104,6 +104,7 @@ class Common extends CI_Controller {
 	}
 	//根据班级id查询班级学生
 	public function get_student_by_class_id(){
+
 		$class_id= $this->input->get('class_id');
 		//var_dump($class_id);
 		$result = $this->Student_model->get_student_by_class_id($class_id);
