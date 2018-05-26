@@ -33,16 +33,6 @@ class Admin extends CI_Controller {
 			echo 'fail';
 		}
 	}
-	//删除班级
-	public function del_class(){
-		$cid = $this->input->get('delId');
-		$rows = $this->Class_model->del_class($cid);
-		if($rows>0){
-			echo 'success';
-		}else{
-			echo 'fail';
-		}
-	}
 	
 	//添加学院
 	public function add_college(){
@@ -56,16 +46,6 @@ class Admin extends CI_Controller {
 			}else{	
 				echo 'fail';
 			}
-	}
-	//删除学院
-	public function del_college(){
-		$id = $this->input->get('delId');
-		$rows = $this->College_model->del_college($id);
-		if($rows>0){
-			echo 'success';
-		}else{
-			echo 'fail';
-		}
 	}
 	//添加专业
 	public function add_profession(){
@@ -104,20 +84,6 @@ class Admin extends CI_Controller {
 			echo 'fail';
 		}
 	}
-
-	//删除导员
-	public function del_admin(){
-		$id = $this->input->get('delId');
-		$rows = $this->Admin_model->del_admin($id);
-		if($rows>0){
-			echo 'success';
-		}else{
-			echo 'fail';
-		}
-	}
-
-
-
 	//添加学生
 	public function add_student(){
 		$num  = $this->input->get('num');
@@ -126,12 +92,6 @@ class Admin extends CI_Controller {
 		$cid = $this->input->get('cid');
 		$grade = $this->input->get('grade');
 		$college_id = $this->input->get('college_id');
-		$national = $this->input->get('national');
-		$household = $this->input->get('household');
-		$political = $this->input->get('political');
-		$dormitory = $this->input->get('dormitory');
-		$difficulties = $this->input->get('difficulties');
-		$loans = $this->input->get('loans');
 		$sex = $this->input->get('sex');
 		$img = $sex=='男'?'http://127.0.0.1/nefu/uploads/s1.png':'http://127.0.0.1/nefu/uploads/s4.png';
 		$personas_img = $sex=='男'?'http://127.0.0.1/nefu/uploads/boy.png':'http://127.0.0.1/nefu/uploads/girl.png';
@@ -145,13 +105,7 @@ class Admin extends CI_Controller {
 				's_pass'=>md5($psd),'class_id'=>$cid,
 				'grade'=>$grade,'img'=>$img,
 				'college_id'=>$college_id,'sex'=>$sex,
-				'personas_img'=>$personas_img,
-				'national'=>$national,
-				'household'=>$household,
-				'political'=>$political,
-				'dormitory'=>$dormitory,
-				'difficulties'=>$difficulties,
-				'loans'=>$loans
+				'personas_img'=>$personas_img
 			);
 			$result = $this->Student_model->add_student($data);
 			if($result){
@@ -401,21 +355,24 @@ class Admin extends CI_Controller {
 	public function reset_add_deyu(){ 
 		$data = array();
 		$pim=$this->input->get('pim');
+		
 		foreach($pim as $rs){				
 			$item=json_decode($rs);
-			$arr1 = array(				
+			$arr1 = array(			//更新的内容	
 				'd_cfm'=>$item->check,
-				'd_tag'=>$item->d_tag,
 				'd_sta'=>2,
 				'd_who'=>$item->person,
 			);
-			$arr2=array(
+			$arr2=array(  //where条件
 				's_num'=>$item->s_num,
 				'get_term'=>$item->get_term,
 				'month'=>$item->month,
 				'd_num'=>$item->index,
+				'd_tag'=>$item->d_tag,
 			);
+			// var_dump($arr1); var_dump($arr2);
 			$update = $this->Deyu_model->upd_deyu($arr1,$arr2);
+		
 		}
 		if($update){
 			echo "success";    
@@ -430,8 +387,7 @@ class Admin extends CI_Controller {
 		foreach($pim as $rs){				
 			$item=json_decode($rs);
 			$arr1 = array(				
-				'd_cfm'=>$item->check,
-				'd_tag'=>$item->d_tag,
+				'd_cfm'=>$item->check,			
 				'd_sta'=>2,
 				'd_who'=>$item->person,
 			);
@@ -440,8 +396,10 @@ class Admin extends CI_Controller {
 				'get_term'=>$item->get_term,
 				'month'=>$item->month,
 				'd_num'=>$item->index,
+				'd_tag'=>$item->d_tag,
 			);
 			$update = $this->Deyu_model->upd_short_deyu($arr1,$arr2);
+			
 		}
 		if($update){
 			echo "success";    
@@ -461,9 +419,8 @@ class Admin extends CI_Controller {
 				'w_sta'=>2,
 				'w_who'=>$item->w_who,				
 			);
-			$w_id=$item->index+1;
-			$upd=$this->Wenti_model->upd_wenti($arr1,$w_id);
-		
+			$w_id=$item->imi;
+			$upd=$this->Wenti_model->upd_wenti($arr1,$w_id);	
 		}
 		if($upd){
 			echo "success";

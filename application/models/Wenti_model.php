@@ -40,7 +40,7 @@
         }
         //辅导员和考评查看本学期文体成绩  //专业班级
         public function adm_get_detail_wenti($c_id,$class_id,$term,$month){
-            $sql="select wenti.s_num,student.s_name,class_name,college.name as cname,
+            $sql="select w_id,wenti.s_num,student.s_name,class_name,college.name as cname,
             get_term,month,w_why,w_self,w_type,w_cfm,w_who  from wenti,class,student,college 
             where is_del=0 and wenti.s_num=student.s_num and 
             student.class_id=class.id and class.p_id=college.c_id

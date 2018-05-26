@@ -60,8 +60,9 @@
         }
         //辅导员和考评查看本学期所选同学的德育成绩 
         public function adm_get_stu_detail_deyu($class_id,$term,$month,$s_id){
-            $sql="select deyu.s_num,student.s_name,d_content,d_tag,get_term,d_why,d_self,d_cfm,d_who from deyu,class,student where deyu.s_num=student.s_num and student.class_id=class.id 
-            and get_term='$term' and student.s_id='$s_id' and class.id='$class_id' and month='$month';";
+            $sql="select deyu.s_num,student.s_name,d_content,d_tag,get_term,d_why,d_self,d_cfm,d_who,d_sta from deyu,student 
+            where deyu.s_num=student.s_num
+            and get_term='$term' and student.s_id='$s_id' and class_id='$class_id' and month='$month';";
             $query=$this->db->query($sql);
             return $query->result();
         }
