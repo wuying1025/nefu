@@ -233,9 +233,9 @@ class Student extends CI_Controller {
 			$pic_url =  $path . $pic_name;
 			if (move_uploaded_file($name_tmp, $pic_url)) {//临时文件转移到目标文件夹
 				$this->load->model('Student_model');
-				$img_path  = 'http://127.0.0.1/nefu/uploads/'.$pic_name;
+				$img_path  = base_url().'uploads/'.$pic_name;
 				$row = $this->Student_model->update_face($s_id,$img_path);
-				echo 'http://127.0.0.1/nefu/uploads/'.$pic_name;
+				echo  base_url().'uploads/'.$pic_name;
 			} else {
 				echo 'fail';
 			}
