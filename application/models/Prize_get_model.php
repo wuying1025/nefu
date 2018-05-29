@@ -60,15 +60,15 @@ class Prize_get_model extends CI_model
     // 根据学号、姓名、学期 查询获奖情况
     public function get_person_to_prize($num, $name, $term)
     {
-        $sql = "select * from prize_get p, student s where p.u_id=s.s_id ";
+        $sql = "select * from prize_confirm c, student s where c.u_id=s.s_id ";
         if ($num != "") {
             $sql .= " and s.s_num like '%$num%' ";
         }
         if ($name != "") {
-            $sql .= " and s.s_name like '%$name%' ";
+            $sql .= " and c.u_name like '%$name%' ";
         }
         if ($term != "") {
-            $sql .= " and p.get_time like '%$term%' ";
+            $sql .= " and c.add_time like '%$term%' ";
         }
         $query = $this->db->query($sql);
         return $query->result();
@@ -77,22 +77,21 @@ class Prize_get_model extends CI_model
     // 奖查人
     public function get_prize_to_person($college, $grade, $major, $clazz, $prize, $term)
     {
-        $sql = "select *  from prize_get p, student s, college c, class cl where p.u_id=s.s_id and s.class_id=cl.id and cl.p_id=c.c_id ";
+        $sql = "select *  from prize_confirm p, student s, college c, class cl where p.u_id=s.s_id and s.class_id=cl.id and cl.p_id=c.c_id ";
         if ($grade != "") {
             $sql .= " and cl.grade=$grade";
         }
-
         if ($clazz != "") {
-            $sql .= " and cl.class_name=$clazz ";
+            $sql .= " and cl.id=$clazz";
         }
         if ($major != "") {//根据专业查询
             $sql .= " and  c.c_id=$major ";
         }
-        if ($prize != "") {
-            $sql .= " and p.get_time=$prize ";
-        }
         if ($term != "") {
-            $sql .= " and p.i_name=$term ";
+            $sql .= " and p.add_time='$term'";
+        }
+        if ($prize != "") {
+            $sql .= " and p.i_name='$prize'";
         }
         $query = $this->db->query($sql);
         return $query->result();
