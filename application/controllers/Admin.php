@@ -398,57 +398,52 @@ class Admin extends CI_Controller {
         }
 	}
 	//考评更改学生德育加分
-	public function reset_add_deyu(){ 
+	public function reset_add_deyu(){
 		$data = array();
 		$pim=$this->input->get('pim');
-		
-		foreach($pim as $rs){				
-			$item=json_decode($rs);
-			$arr1 = array(			//更新的内容	
-				'd_cfm'=>$item->check,
-				'd_sta'=>2,
-				'd_who'=>$item->person,
-			);
-			$arr2=array(  //where条件
-				's_num'=>$item->s_num,
-				'get_term'=>$item->get_term,
-				'month'=>$item->month,
-				'd_num'=>$item->index,
-				'd_tag'=>$item->d_tag,
-			);
-			// var_dump($arr1); var_dump($arr2);
-			$update = $this->Deyu_model->upd_deyu($arr1,$arr2);
-		
-		}
+		$term=json_decode($pim);
+		$arr1 = array(			//更新的内容
+			'd_cfm'=>$term->check,
+			'd_sta'=>2,
+			'd_who'=>$term->person,
+		);
+		$arr2=array(  //where条件
+			's_num'=>$term->s_num,
+			'get_term'=>$term->get_term,
+			'month'=>$term->month,
+			'd_tag'=>$term->d_tag,
+			'd_why'=>$term->reason
+		);
+		$update = $this->Deyu_model->upd_deyu($arr1,$arr2);
 		if($update){
-			echo "success";    
+			echo "success";
 		}else{
 			echo "fail";
 		}
 	}
 	//考评更改学生德育减分
-	public function reset_short_deyu(){ 
+	public function reset_short_deyu(){
 		$data = array();
 		$pim=$this->input->get('pim');
-		foreach($pim as $rs){				
-			$item=json_decode($rs);
-			$arr1 = array(				
-				'd_cfm'=>$item->check,			
-				'd_sta'=>2,
-				'd_who'=>$item->person,
-			);
-			$arr2=array(
-				's_num'=>$item->s_num,
-				'get_term'=>$item->get_term,
-				'month'=>$item->month,
-				'd_num'=>$item->index,
-				'd_tag'=>$item->d_tag,
-			);
-			$update = $this->Deyu_model->upd_short_deyu($arr1,$arr2);
-			
-		}
+		$item=json_decode($pim);
+
+		$arr1 = array(
+			'd_cfm'=>$item->check,
+			'd_sta'=>2,
+			'd_who'=>$item->person,
+			'd_why'=>$item->reason
+		);
+		$arr2=array(
+			's_num'=>$item->s_num,
+			'get_term'=>$item->get_term,
+			'month'=>$item->month,
+			'd_tag'=>$item->d_tag,
+		);
+		$update = $this->Deyu_model->upd_short_deyu($arr1,$arr2);
+
+
 		if($update){
-			echo "success";    
+			echo "success";
 		}else{
 			echo "fail";
 		}
@@ -458,8 +453,7 @@ class Admin extends CI_Controller {
 		$data = array();
 		$pim=$this->input->get('pim');
 
-		foreach($pim as $rs){				
-			$item=json_decode($rs);
+			$item=json_decode($pim);
 			$arr1=array(
 				'w_cfm'=>$item->w_cfm,
 				'w_sta'=>2,
@@ -467,7 +461,6 @@ class Admin extends CI_Controller {
 			);
 			$w_id=$item->imi;
 			$upd=$this->Wenti_model->upd_wenti($arr1,$w_id);	
-		}
 		if($upd){
 			echo "success";
 		}else{
