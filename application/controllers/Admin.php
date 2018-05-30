@@ -438,6 +438,7 @@ class Admin extends CI_Controller {
 			'get_term'=>$item->get_term,
 			'month'=>$item->month,
 			'd_tag'=>$item->d_tag,
+			'd_why'=>$item->reason
 		);
 		$update = $this->Deyu_model->upd_short_deyu($arr1,$arr2);
 
@@ -459,8 +460,12 @@ class Admin extends CI_Controller {
 				'w_sta'=>2,
 				'w_who'=>$item->w_who,				
 			);
-			$w_id=$item->imi;
-			$upd=$this->Wenti_model->upd_wenti($arr1,$w_id);	
+			$arr2=array(
+				'w_id'=>$item->imi,
+				'w_why'=>$item->reason
+			);
+			
+			$upd=$this->Wenti_model->upd_wenti($arr1,$arr2);	
 		if($upd){
 			echo "success";
 		}else{

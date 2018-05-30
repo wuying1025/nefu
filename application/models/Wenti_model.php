@@ -25,9 +25,10 @@
             return $query->result();
         }
         //考评更改学生文体成绩
-        public function upd_wenti($arr1,$w_id){
-            $this->db->where('w_id',$w_id);
-            $update=$this->db->update('wenti',$arr1);
+        public function upd_wenti($arr1,$arr2){
+            // $this->db->where('w_id',$w_id);
+            // $update=$this->db->update('wenti',$arr1);
+            $update=$this->db->update('wenti',$arr1,$arr2);
             return $update;
         }
         //辅导员和考评查看超过一学期文体成绩 
